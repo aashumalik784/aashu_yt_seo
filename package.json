@@ -1,14 +1,5 @@
 {
-  "name": "aashu-yt-seo",
-  "version": "1.0.0",
-  "description": "YouTube Viral SEO Tool",
-  "main": "index.html",
-  "dependencies": {
-    "axios": "^1.6.0",
-    "groq-sdk": "^0.3.0"
-  },
-  "devDependencies": {},
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  }
+  "rewrites": [
+    { "source": "/api/(.*)", "destination": "/api/$1" }
+  ]
 }
