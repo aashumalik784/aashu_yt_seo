@@ -1,0 +1,11 @@
+{
+  "name": "aashu-yt-seo-tool",
+  "version": "1.0.0",
+  "description": "YouTube SEO Tool by Aashu",
+  "main": "index.html",
+  "dependencies": {
+    "yt-dlp-exec": "1.0.1"
+  },
+  "author": "Aashu Malik",
+  "license": "ISC"
+}
