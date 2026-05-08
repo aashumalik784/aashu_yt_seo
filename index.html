@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aashu YT SEO Tool</title>
+    <style>
+        body { background-color: #050a30; color: white; font-family: sans-serif; text-align: center; padding: 20px; }
+        .container { border: 2px solid #e50914; border-radius: 15px; padding: 20px; max-width: 400px; margin: auto; background: #000c1d; }
+        h1 { color: white; }
+        input { width: 90%; padding: 10px; margin: 10px 0; border-radius: 5px; border: none; background: #111; color: white; }
+        button { background-color: #e50914; color: white; border: none; padding: 12px 20px; border-radius: 5px; cursor: pointer; font-weight: bold; width: 100%; }
+        #result { margin-top: 20px; padding: 15px; border-top: 1px dashed #444; display: none; text-align: left; }
+        img { max-width: 100%; border-radius: 10px; margin-top: 10px; }
+        .loading { color: #ffbd03; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Aashu YT SEO Tool</h1>
+    <input type="text" id="videoUrl" placeholder="Paste YouTube Link Here...">
+    <button onclick="analyzeVideo()">Analyze Metadata</button>
+
+    <div id="loading" class="loading" style="display:none;">Analyzing... Please wait...</div>
+
+    <div id="result">
+        <h3 id="resTitle" style="color:#e50914;"></h3>
+        <div id="resThumb"></div>
+        <p style="color: #28a745; font-weight: bold;">Status: Success!</p>
+    </div>
+</div>
+
+<script>
+    async function analyzeVideo() {
+        const url = document.getElementById('videoUrl').value;
+        const resultDiv = document.getElementById('result');
+        const loadingDiv = document.getElementById('loading');
+        
+        if(!url) { alert("Please paste a link!"); return; }
+
+        loadingDiv.style.display = 'block';
+        resultDiv.style.display = 'none';
+
+        try {
+            const response = await fetch('/.netlify/functions/yt-api', {
+                method: 'POST',
+                body: JSON.stringify({ url: url })
+            });
+            const data = await response.json();
+
+            if(data.title) {
+                document.getElementById('resTitle').innerText = "Title: " + data.title;
+                document.getElementById('resThumb').innerHTML = `<img src="${data.thumbnail}" alt="Thumbnail">`;
+                resultDiv.style.display = 'block';
+            } else {
+                alert("Error: Data not found!");
+            }
+        } catch (error) {
+            alert("Connection error! Check if function is deployed.");
+        } finally {
+            loadingDiv.style.display = 'none';
+        }
+    }
+</script>
+
+</body>
+</html>
+
