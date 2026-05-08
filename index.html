@@ -1,137 +1,94 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="hi">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aashu YouTube SEO - Viral Tool</title>
+    <title>Aashu YouTube SEO - Vercel</title>
     <style>
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #0f0f0f; color: white; text-align: center; margin: 0; padding: 20px; }
-        .container { max-width: 600px; margin: auto; background: #1a1a1a; padding: 25px; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.7); border: 1px solid #333; }
+        :root {
+            --red: #E50914;
+            --black: #141414;
+            --grey: #1f1f1f;
+            --galaxy: #0a0e1a;
+            --white: #ffffff;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--galaxy);
+            color: var(--white);
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .container {
+            width: 100%;
+            max-width: 600px;
+            background-color: var(--black);
+            padding: 25px;
+            border-radius: 15px;
+            border-top: 4px solid var(--red);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.7);
+        }
+        h1 { text-align: center; color: var(--red); text-transform: uppercase; letter-spacing: 2px; }
         
-        /* Profile Styling */
-        .profile-img { width: 80px; height: 80px; border-radius: 50%; border: 2px solid #ff0000; margin-bottom: 10px; object-fit: cover; }
+        .input-area { margin: 20px 0; }
+        input {
+            width: 100%;
+            padding: 15px;
+            background: var(--grey);
+            border: 1px solid #333;
+            color: white;
+            border-radius: 8px;
+            box-sizing: border-box;
+            font-size: 16px;
+            outline: none;
+        }
+        input:focus { border-color: var(--red); }
         
-        h1 { color: #ff0000; font-size: 28px; margin: 10px 0 5px 0; letter-spacing: 1px; }
-        p.subtitle { color: #aaa; margin-bottom: 25px; font-size: 14px; text-transform: uppercase; }
-        
-        .input-group { margin-bottom: 20px; }
-        input { width: 85%; padding: 14px; border-radius: 30px; border: 2px solid #333; background: #000; color: #fff; outline: none; font-size: 15px; transition: 0.3s; }
-        input:focus { border-color: #ff0000; box-shadow: 0 0 10px rgba(255, 0, 0, 0.2); }
-        
-        button { background-color: #ff0000; color: white; border: none; padding: 12px 35px; border-radius: 30px; cursor: pointer; font-weight: bold; font-size: 16px; transition: 0.3s; box-shadow: 0 4px 15px rgba(255, 0, 0, 0.3); }
-        button:hover { background-color: #cc0000; transform: translateY(-2px); }
-        button:active { transform: translateY(0); }
+        button {
+            width: 100%;
+            padding: 15px;
+            background: var(--red);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 10px;
+            font-size: 16px;
+            transition: 0.3s;
+        }
+        button:hover { opacity: 0.8; transform: scale(1.01); }
 
-        #result { display: none; margin-top: 30px; text-align: left; animation: fadeIn 0.5s ease-in; }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-
-        .seo-box { background: #262626; padding: 15px; border-radius: 12px; margin-bottom: 20px; border: 1px solid #444; transition: 0.3s; }
-        .seo-box:hover { border-color: #ff0000; }
+        #loading { display: none; text-align: center; margin: 20px; color: #aaa; font-style: italic; }
         
-        label { font-size: 13px; color: #ff0000; font-weight: bold; display: block; margin-bottom: 8px; text-transform: uppercase; }
-        textarea { width: 100%; height: 70px; background: transparent; color: #eee; border: none; resize: none; font-size: 14px; outline: none; font-family: inherit; }
+        .result { display: none; margin-top: 25px; background: #222; padding: 15px; border-radius: 10px; }
+        img { width: 100%; border-radius: 8px; margin-bottom: 10px; box-shadow: 0 5px 15px rgba(0,0,0,0.5); }
         
-        .copy-btn { background: #ff0000; color: #fff; font-size: 11px; padding: 6px 12px; border-radius: 5px; cursor: pointer; float: right; font-weight: bold; }
-        .copy-btn:hover { background: #fff; color: #000; }
-        
-        #loading { display: none; margin: 20px; color: #ffcc00; font-weight: bold; }
-        .thumb-preview { width: 100%; border-radius: 10px; margin-bottom: 15px; border: 1px solid #333; }
+        label { color: var(--red); font-weight: bold; display: block; margin-top: 15px; }
+        textarea {
+            width: 100%;
+            height: 100px;
+            background: #111;
+            color: #ccc;
+            border: 1px solid #444;
+            padding: 10px;
+            border-radius: 5px;
+            margin: 5px 0;
+            resize: none;
+            box-sizing: border-box;
+            font-size: 14px;
+        }
+        .copy-btn { background: #444; font-size: 14px; padding: 8px; width: auto; margin-bottom: 10px; }
     </style>
 </head>
 <body>
-
-<div class="container">
-    <img src="AASHU_MALIK.jpg" onerror="this.src='https://via.placeholder.com/80'" class="profile-img" alt="Aashu Malik">
-    
-    <h1>Aashu YouTube SEO</h1>
-    <p class="subtitle">Viral Algorithm & Keywords Generator</p>
-
-    <div class="input-group">
-        <input type="text" id="videoUrl" placeholder="Paste YouTube Link (Shorts or Video)...">
-    </div>
-    <button onclick="analyzeSEO()">Generate Viral SEO</button>
-
-    <div id="loading">🚀 Analyzing YouTube Algorithm...</div>
-
-    <div id="result">
-        <img id="resThumb" class="thumb-preview" src="" alt="Thumbnail">
-        <h3 id="resTitle" style="font-size: 18px; color: #fff; margin-bottom: 20px; border-left: 4px solid #ff0000; padding-left: 10px;"></h3>
-
-        <div class="seo-box">
-            <span class="copy-btn" onclick="copyText('resTags')">COPY</span>
-            <label>🚀 Viral Tags</label>
-            <textarea id="resTags" readonly></textarea>
-        </div>
-
-        <div class="seo-box">
-            <span class="copy-btn" onclick="copyText('resHashtags')">COPY</span>
-            <label>#️⃣ Trending Hashtags</label>
-            <textarea id="resHashtags" readonly></textarea>
-        </div>
-
-        <div class="seo-box">
-            <span class="copy-btn" onclick="copyText('resDesc')">COPY</span>
-            <label>📝 SEO Description</label>
-            <textarea id="resDesc" style="height: 120px;" readonly></textarea>
-        </div>
-    </div>
-</div>
-
-<script>
-    // Handle Enter Key
-    document.getElementById('videoUrl').addEventListener('keypress', function (e) {
-        if (e.key === 'Enter') { analyzeSEO(); }
-    });
-
-    async function analyzeSEO() {
-        const url = document.getElementById('videoUrl').value;
-        if(!url) { alert("Bhai, pehle link toh dalo!"); return; }
-
-        document.getElementById('loading').style.display = 'block';
-        document.getElementById('result').style.display = 'none';
-
-        try {
-            const response = await fetch('/.netlify/functions/yt-api', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ url: url })
-            });
-            const data = await response.json();
-
-            if(data.title) {
-                document.getElementById('resTitle').innerText = data.title;
-                document.getElementById('resThumb').src = data.thumbnail;
-                document.getElementById('resTags').value = data.tags;
-                document.getElementById('resHashtags').value = data.hashtags;
-                document.getElementById('resDesc').value = data.description;
+    <div class="container">
+        <h1>Aashu YouTube SEO</h1>
+        
+        <div class="input-area">
+            <input type="text" id="userInput" placeholder="Paste Video Link or Type Topic...">
+            <button onclick="generateSEO()">Generate Viral SEO Pack
                 
-                document.getElementById('result').style.display = 'block';
-            } else {
-                alert("Error: Data fetch nahi ho paya!");
-            }
-        } catch (error) {
-            alert("Backend connected nahi hai ya server down hai!");
-        } finally {
-            document.getElementById('loading').style.display = 'none';
-        }
-    }
-
-    async function copyText(id) {
-        const textArea = document.getElementById(id);
-        try {
-            await navigator.clipboard.writeText(textArea.value);
-            const btn = document.querySelector(`span[onclick="copyText('${id}')"]`);
-            btn.innerText = "COPIED!";
-            btn.style.background = "#28a745";
-            setTimeout(() => { 
-                btn.innerText = "COPY"; 
-                btn.style.background = "#ff0000";
-            }, 2000);
-        } catch (err) {
-            alert("Copy failed!");
-        }
-    }
-</script>
-
-</body>
-</html>
