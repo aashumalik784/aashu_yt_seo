@@ -10,50 +10,40 @@ exports.handler = async (event) => {
         const { url } = JSON.parse(event.body);
         let videoId = "";
         if(url.includes("v=")) videoId = url.split("v=")[1].split("&")[0];
-        else if(url.includes("shorts/")) videoId = url.split("shorts/")[1].split("?")[0].split("/").pop();
+        else if(url.includes("shorts/")) videoId = url.split("shorts/").pop().split("?")[0];
         else if(url.includes("be/")) videoId = url.split("be/")[1].split("?")[0];
 
-        if(!videoId) return { statusCode: 400, body: JSON.stringify({ error: "Invalid Link" }) };
-
-        // 1. YouTube se details lena
+        // 1. YouTube Data Fetch
         const ytRes = await axios.get(`https://www.googleapis.com/youtube/v3/videos?part=snippet&id=${videoId}&key=${YT_KEY}`);
-        if(!ytRes.data.items.length) return { statusCode: 404, body: JSON.stringify({ error: "Video not found" }) };
+        if(!ytRes.data.items.length) return { statusCode: 404, body: JSON.stringify({ error: "Video nahi mili" }) };
         
         const video = ytRes.data.items[0].snippet;
-        const title = video.title;
+        let aiTags = video.tags ? video.tags.join(", ") : "Viral, Trending, SEO";
+        let aiDesc = "🚀 SEO Optimized: " + video.title;
 
-        // 2. Gemini AI se Viral SEO Pack banwana
-        const geminiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_KEY}`;
-        const prompt = {
-            contents: [{
-                parts: [{
-                    text: `Identify the most viral YouTube SEO elements for a video titled: "${title}". 
-                    Provide: 
-                    1. 15 Viral Tags (comma separated)
-                    2. 10 Trending Hashtags
-                    3. A high-ranking SEO Description with keywords.`
-                }]
-            }]
-        };
-
-        const aiRes = await axios.post(geminiUrl, prompt);
-        const aiText = aiRes.data.candidates[0].content.parts[0].text;
-
-        // Data ko alag karna (Simple splitting logic)
-        const sections = aiText.split('\n');
+        // 2. Gemini AI Call (Try-Catch ke saath taaki tool crash na ho)
+        try {
+            const geminiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_KEY}`;
+            const aiRes = await axios.post(geminiUrl, {
+                contents: [{ parts: [{ text: `Write viral tags and SEO description for: ${video.title}` }] }]
+            });
+            aiDesc = aiRes.data.candidates[0].content.parts[0].text;
+        } catch (aiErr) {
+            console.log("AI Error, using YT data instead");
+        }
 
         return {
             statusCode: 200,
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
-                title: title,
+                title: video.title,
                 thumbnail: video.thumbnails.high.url,
-                tags: sections.find(s => s.toLowerCase().includes("tags")) || "Viral, Trending, SEO, " + title,
-                hashtags: sections.find(s => s.toLowerCase().includes("hashtag")) || "#viral #trending",
-                description: aiText
+                tags: aiTags,
+                hashtags: "#viral #trending #aashumalik",
+                description: aiDesc
             })
         };
     } catch (error) {
-        return { statusCode: 500, body: JSON.stringify({ error: "AI Connection Failed" }) };
+        return { statusCode: 500, body: JSON.stringify({ error: "Check API Keys in Netlify" }) };
     }
 };
