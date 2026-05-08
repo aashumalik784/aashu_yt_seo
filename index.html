@@ -3,67 +3,102 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aashu YT SEO Tool</title>
+    <title>Aashu Malik Creations - YouTube SEO</title>
     <style>
-        body { background-color: #050a30; color: white; font-family: sans-serif; text-align: center; padding: 20px; }
-        .container { border: 2px solid #e50914; border-radius: 15px; padding: 20px; max-width: 400px; margin: auto; background: #000c1d; }
-        h1 { color: white; }
-        input { width: 90%; padding: 10px; margin: 10px 0; border-radius: 5px; border: none; background: #111; color: white; }
-        button { background-color: #e50914; color: white; border: none; padding: 12px 20px; border-radius: 5px; cursor: pointer; font-weight: bold; width: 100%; }
-        #result { margin-top: 20px; padding: 15px; border-top: 1px dashed #444; display: none; text-align: left; }
-        img { max-width: 100%; border-radius: 10px; margin-top: 10px; }
-        .loading { color: #ffbd03; font-weight: bold; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #0f0f0f; color: white; text-align: center; margin: 0; padding: 20px; }
+        .container { max-width: 600px; margin: auto; background: #1a1a1a; padding: 20px; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.5); }
+        h1 { color: #ff0000; font-size: 24px; margin-bottom: 5px; }
+        p.subtitle { color: #aaa; margin-bottom: 20px; font-size: 14px; }
+        input { width: 90%; padding: 12px; border-radius: 25px; border: none; outline: none; font-size: 16px; margin-bottom: 15px; }
+        button { background-color: #ff0000; color: white; border: none; padding: 12px 25px; border-radius: 25px; cursor: pointer; font-weight: bold; font-size: 16px; }
+        button:hover { background-color: #cc0000; }
+        #result { display: none; margin-top: 25px; text-align: left; border-top: 1px solid #333; padding-top: 20px; }
+        .seo-box { background: #262626; padding: 10px; border-radius: 8px; margin-bottom: 15px; position: relative; }
+        label { font-size: 14px; color: #ff0000; font-weight: bold; display: block; margin-bottom: 5px; }
+        textarea { width: 95%; height: 60px; background: transparent; color: #ddd; border: none; resize: none; font-size: 13px; outline: none; }
+        .copy-btn { background: #444; color: #fff; font-size: 11px; padding: 5px 10px; border-radius: 5px; cursor: pointer; float: right; }
+        .copy-btn:hover { background: #666; }
+        #loading { display: none; margin: 20px; color: #ffcc00; }
+        img { width: 100%; border-radius: 10px; margin-bottom: 10px; }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <h1>Aashu YT SEO Tool</h1>
-    <input type="text" id="videoUrl" placeholder="Paste YouTube Link Here...">
-    <button onclick="analyzeVideo()">Analyze Metadata</button>
+    <h1>Aashu Malik Creations</h1>
+    <p class="subtitle">YouTube Viral SEO & Algorithm Tool</p>
 
-    <div id="loading" class="loading" style="display:none;">Analyzing... Please wait...</div>
+    <input type="text" id="videoUrl" placeholder="Paste YouTube Video/Shorts Link Here...">
+    <br>
+    <button onclick="analyzeSEO()">Generate Viral SEO</button>
+
+    <div id="loading">Analyzing YouTube Algorithm...</div>
 
     <div id="result">
-        <h3 id="resTitle" style="color:#e50914;"></h3>
-        <div id="resThumb"></div>
-        <p style="color: #28a745; font-weight: bold;">Status: Success!</p>
+        <img id="resThumb" src="" alt="Thumbnail">
+        <h3 id="resTitle" style="font-size: 18px; margin-bottom: 15px;"></h3>
+
+        <div class="seo-box">
+            <label>🚀 Viral Tags (Best for Search)</label>
+            <span class="copy-btn" onclick="copyText('resTags')">Copy</span>
+            <textarea id="resTags" readonly></textarea>
+        </div>
+
+        <div class="seo-box">
+            <label>#️⃣ Viral Hashtags</label>
+            <span class="copy-btn" onclick="copyText('resHashtags')">Copy</span>
+            <textarea id="resHashtags" readonly></textarea>
+        </div>
+
+        <div class="seo-box">
+            <label>📝 SEO Optimized Description</label>
+            <span class="copy-btn" onclick="copyText('resDesc')">Copy</span>
+            <textarea id="resDesc" style="height: 100px;" readonly></textarea>
+        </div>
     </div>
 </div>
 
 <script>
-    async function analyzeVideo() {
+    async function analyzeSEO() {
         const url = document.getElementById('videoUrl').value;
-        const resultDiv = document.getElementById('result');
-        const loadingDiv = document.getElementById('loading');
-        
-        if(!url) { alert("Please paste a link!"); return; }
+        if(!url) { alert("Pehle link toh dalo!"); return; }
 
-        loadingDiv.style.display = 'block';
-        resultDiv.style.display = 'none';
+        document.getElementById('loading').style.display = 'block';
+        document.getElementById('result').style.display = 'none';
 
         try {
             const response = await fetch('/.netlify/functions/yt-api', {
                 method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ url: url })
             });
             const data = await response.json();
 
             if(data.title) {
-                document.getElementById('resTitle').innerText = "Title: " + data.title;
-                document.getElementById('resThumb').innerHTML = `<img src="${data.thumbnail}" alt="Thumbnail">`;
-                resultDiv.style.display = 'block';
+                document.getElementById('resTitle').innerText = data.title;
+                document.getElementById('resThumb').src = data.thumbnail;
+                document.getElementById('resTags').value = data.tags;
+                document.getElementById('resHashtags').value = data.hashtags;
+                document.getElementById('resDesc').value = data.description;
+                
+                document.getElementById('result').style.display = 'block';
             } else {
-                alert("Error: Data not found!");
+                alert("Error: Data nahi mila!");
             }
         } catch (error) {
-            alert("Connection error! Check if function is deployed.");
+            alert("Server connect nahi ho raha!");
         } finally {
-            loadingDiv.style.display = 'none';
+            document.getElementById('loading').style.display = 'none';
         }
+    }
+
+    function copyText(id) {
+        const text = document.getElementById(id);
+        text.select();
+        document.execCommand("copy");
+        alert("Copied to clipboard!");
     }
 </script>
 
 </body>
 </html>
-
