@@ -1,16 +1,8 @@
 {
   "name": "aashu-yt-seo",
   "version": "1.0.0",
-  "description": "YouTube Viral SEO Tool",
   "main": "api/yt-api.js",
   "dependencies": {
-    "axios": "^1.6.0",
-    "groq-sdk": "^0.3.0"
-  },
-  "engines": {
-    "node": "18.x"
-  },
-  "scripts": {
-    "start": "node api/yt-api.js"
+    "axios": "^1.6.0"
   }
 }
